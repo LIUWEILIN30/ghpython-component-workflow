@@ -1,37 +1,19 @@
-# Component icons
+# Component icon semantics and oil-icon handoff
 
-Use for requested icon design, ghuser icon embedding or icon-only maintenance. Icons are optional and must not change accepted source, ports or component identities.
+Use when custom component icons are requested. This skill supplies source-backed component semantics; use the **`oil-icon` skill** for artwork creation. The earlier hand-authored SVG / 24px pixel-icon design approach was unsuccessful and is retired from this workflow. Do not reuse its drawing recipe or require editable SVG masters.
 
-## Design and mapping
+## Understand each component before generating artwork
 
-Read each component's purpose from its source header. Use a source stem or stable identity to map each released component to its icon; translated display names and category order are weak keys. Check against the current release manifest, not a historical development inventory that may contain obsolete or omit candidate components.
+Read the current source header, port specifications and relevant implementation. Record **input → operation → output**, then select the main object and the relationship that distinguishes this component from its neighbours. Do not infer the algorithm from an old icon or a translated name.
 
-Maintain an editable SVG master and a gallery showing both enlarged and native-size icons. A 24 by 24 canvas with transparent background was used successfully for GH User Objects; confirm the target runtime's size expectations. Keep silhouettes and visual weight consistent, and use a small shared palette. Distinct functional motifs should remain recognizable at native size. Preview light/dark backgrounds; avoid tiny labels and details that vanish after rasterization.
+When spatial geometry matters, identify the actual objects (curves, surfaces, solids, layer stacks, walls or ribs), their topology and spatial relationships. Distinguish open from closed paths, inner from outer boundaries, layered geometry from continuous connections, and geometry from data-grouping symbols. Use source geometry or provided views to resolve ambiguity; identify uncertainty instead of inventing hidden geometry. Suggest a 3D metaphor when depth, layers or adjacency explain the operation, or a 2D metaphor when that communicates it more clearly. This is semantic preparation, not a separate rendering method.
 
-For editable vector delivery, use real paths/shapes; an embedded bitmap is not an editable vector. Avoid unintended external image/font dependencies. Render a PNG at the target size using a confirmed available SVG renderer, then check dimensions, transparency, clipping and component-to-file coverage. Raster-only artwork is acceptable when explicitly requested; AI raster generation is not needed for simple vector icons.
+Prepare one concise concept per component: stable source stem or identity, displayed name, source-backed function, concrete visual metaphor and any essential spatial relationship. Check coverage against the current release manifest. Use stable identifiers for file mapping rather than category order or translated display names.
 
-## Semantic design before rendering
+## Hand off artwork to oil-icon
 
-Before drawing, record the source-backed function as input → operation → output. Select one main object and one distinguishing relationship. Separate actual path geometry, surface shading, visible edge bands, and organizational symbols; never infer a component's algorithm from its old icon.
+Locate **`oil-icon`** in the available skill catalog and read its `SKILL.md`. Pass the component concepts, requested count, accepted visual references and any established style specification. Follow that skill for style selection, prompt construction, image generation, slicing, background removal, visual QA and organized transparent PNG delivery; do not duplicate those procedures here. Reuse the agreed style for later batches.
 
-Choose projection per component, not for the entire library. Use restrained 3D when depth, layers, or spatial adjacency explain the function. Use 2D when projection would overlap paths, hide topology, or crowd a 24px canvas. Shared palette, weight, and spacing provide family consistency without forcing every icon into 3D.
+If `oil-icon` is unavailable, finish the semantic brief and explain that the artwork stage needs that skill installed or made available. Do not silently fall back to the retired SVG / 24px design workflow. Do not install dependencies or generate artwork merely because this reference was opened for a documentation task.
 
-A visible outline is a visual effect, not necessarily an SVG stroke. For partly occluded borders, use filled silhouette bands, compound paths, clipping, or back-to-front face layering. Hide rear edges under foreground geometry; do not outline every face independently or double shared edges. Use strokes for actual open paths and simple unobscured contours when appropriate. A raster reference cannot establish how the original vector was authored.
-
-Use a bracket for grouping, an arrow for an actual direction or transformation, and import/export symbols for actual data transfer. Keep one symbol family subordinate to the main object and separated from it by visible space. Do not let a grouping bracket look like a path connection. Remove decorative symbols that do not distinguish function.
-
-Review at native 24px before polishing an enlarged version: main object, operation, gaps, occlusion, and distinction from adjacent component icons. If dense, simplify or switch projection before increasing resolution. Deliver an editable master, transparent native raster, light/dark preview, and a short source-backed semantic note. Candidate drawings remain candidates until accepted; distinguish offline rendering from GH toolbar validation.
-
-## Embed and verify
-
-For first packaging, set the icon through the installed `GH_UserObject` SDK interface before saving; confirm supported members against the installed SDK. The PNG is embedded in the ghuser; the recipient should not require the SVG or PNG file to place the component.
-
-For an authorized icon-only replacement of an existing archive:
-
-1. Preserve baseline ghuser files and their hashes. Read using the installed `GH_IO` archive API and inspect the actual schema.
-2. Change only the verified icon item. In the tested archive layout, this was the outer `Icon` stream; do not assume the same XPath for every runtime or object kind. If editing serialized XML, update the stream length as well as base64 bytes and use GH_IO to serialize back to binary.
-3. Read back the saved binary. Compare decoded embedded icon bytes with the intended PNG. Normalize only the changed icon item and compare the remaining archive against the baseline, including the embedded Object payload, source, ports, identity and metadata. Unexpected schema or non-icon differences stop the replacement.
-4. Verify the release set and update its manifest/ZIP. Keep any intentionally excluded obsolete items out of the archive and installation.
-5. Compare authorized installed replacements with release hashes. Save work and fully restart Rhino/GH when required to clear cached library icons. Do not use `ComponentServer.LoadExternalFiles` as a casual refresh: it can reload assemblies. Inspect a newly placed component; old canvas instances are independent copies.
-
-Report offline icon/archive checks separately from toolbar appearance and fresh-instance execution. An icon update does not require unrelated geometry regressions when exact non-icon payload preservation is established; it also cannot convert an earlier runtime result into current live evidence.
+For authorized embedding of accepted PNGs into ghuser files, use [packaging-mcp.md](packaging-mcp.md#icon-embedding-and-icon-only-updates). Runtime icon sizing is a packaging detail, not a mandate to design artwork on a 24px canvas. Keep artwork approval, archive verification and live Grasshopper observation as distinct evidence.

@@ -24,7 +24,7 @@ This saves manually adding or removing individual ports, renaming them, and clic
 
 The skill also covers DataTree handling, readable diagnostics, and portable `.ghuser` User Object delivery.
 
-For full library delivery and cleanup, use the [stage and artifact map](references/workflow-and-artifacts.md). Requested [component icons](references/icons.md) use editable masters, native-size previews and verified embedded PNGs; release checks distinguish offline readback from live GH acceptance.
+For full library delivery and cleanup, use the [stage and artifact map](references/workflow-and-artifacts.md). For requested [component icons](references/icons.md), prepare source-backed function and spatial-geometry concepts, then use the `oil-icon` skill for artwork and transparent PNG delivery. The earlier SVG / 24px pixel-icon design method is retired. Embedding checks belong to packaging; offline readback and live GH acceptance remain distinct.
 
 Inspection of the local Rhino 8.20 assemblies identified **35 built-in semantic hint categories**. The starter includes corresponding aliases plus explicit CLR type support. This is not a fixed total for all GH versions, plugins or Python menus: selection is checked against the actual component and unsupported hints fail explicitly. See [type coverage](references/type-hints.md).
 

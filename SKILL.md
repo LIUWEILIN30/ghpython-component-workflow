@@ -19,7 +19,8 @@ Keep implementation in a stable workspace `.py`; paste its small loader into GH 
 | Shared helper changes, backups or release maintenance | Relevant section of [maintenance.md](references/maintenance.md) |
 | Validation or requested packaging | [validation.md](references/validation.md); [packaging-mcp.md](references/packaging-mcp.md) only for packaging |
 | Whole workflow, library delivery or file reorganization | [workflow-and-artifacts.md](references/workflow-and-artifacts.md) |
-| Custom icons or icon-only ghuser updates | [icons.md](references/icons.md) |
+| Custom component icons | Source-backed function/geometry brief in [icons.md](references/icons.md), then use `oil-icon` for artwork |
+| Icon-only ghuser updates | [packaging-mcp.md](references/packaging-mcp.md#icon-embedding-and-icon-only-updates) |
 
 Do not load all references, tests, READMEs or templates each turn. Use the generator to copy tested infrastructure instead of reproducing it in chat. Inspect that infrastructure when changing it or diagnosing it. Reuse recorded runtime, source path and hint catalog; do not re-enumerate types or browse unchanged APIs for every component. Prefer bounded Debug summaries and focused tests. Read additional material when a failure or uncertainty requires it; token savings must not hide unverified behavior.
 

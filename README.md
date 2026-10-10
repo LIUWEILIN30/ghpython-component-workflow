@@ -1,6 +1,6 @@
 # GHPython 组件开发工作流
 
-完整组件库交付与文件整理见[阶段及文件职责](references/workflow-and-artifacts.md)；定制[组件图标](references/icons.md)采用可编辑母版、原尺寸预览和内嵌PNG回读检查。流程按任务选用开发、验收、独立封装、中文化、图标、发布、安装与归档阶段，分别记录离线检查和GH实时验收证据。
+完整组件库交付与文件整理见[阶段及文件职责](references/workflow-and-artifacts.md)；定制[组件图标](references/icons.md)先梳理组件功能与必要的三维几何语义，再使用 `oil-icon` skill 完成图标制作与透明 PNG 交付；ghuser 嵌入与回读检查见封装规范。旧 SVG／24px 像素图标设计方法已停用。流程按任务选用开发、验收、独立封装、中文化、图标、发布、安装与归档阶段，分别记录离线检查和GH实时验收证据。
 
 **简体中文** | [English](README_EN.md)
 

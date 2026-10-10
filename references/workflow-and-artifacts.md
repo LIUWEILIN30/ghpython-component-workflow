@@ -9,7 +9,7 @@ Use this map when planning a whole component/workflow delivery, packaging a libr
 | Accept behavior | Exercise realistic inputs and the producer/editor/consumer chain. | Geometry, meaningful tree paths, errors, repeated solves, compatible wires and save/reopen. Distinguish offline and live results. |
 | Prepare standalone release | Build a separate source without the workspace loader or test-only exports. Choose component metadata and stable identity. | Accepted behavior retained; no undeclared workspace dependencies. Read [packaging-mcp.md](packaging-mcp.md). |
 | Localize if requested | Apply the language contract to authoritative specs/header/diagnostics and both library and embedded metadata. | Readback matches source; descriptions survive port setup and another solve. Localization must not weaken inputs or alter algorithm semantics. |
-| Design icons if requested | Map each released component to an editable vector master and an embedded raster. | Inspect native-size clarity and mapping coverage. Read [icons.md](icons.md). |
+| Design icons if requested | Prepare component function and spatial-geometry concepts, then use `oil-icon` for artwork and transparent PNG delivery. | Follow `oil-icon` QA and verify component-to-file coverage. Read [icons.md](icons.md). |
 | Serialize and check | Package fresh components, or apply a bounded metadata update to recoverable existing artifacts. | Binary readback, exact embedded source, metadata/ports/icon/identity checks; live instantiate and workflow checks when available. |
 | Deliver and install | Build an explicit manifest-based archive, source, requested examples and concise runtime/install notes. Install only within authorized scope. | ZIP integrity, exact membership and hashes; installed file matches release; restart and fresh-instance checks when available. |
 | Maintain and archive | Keep current source paths stable; archive completed experiments, scripts and baselines with provenance. | Migration map, hashes and repaired active links; reports retain their batch-specific scope. |
@@ -22,7 +22,7 @@ Use these roles within the existing layout; they are not mandatory directory nam
 
 - **Active development:** source, loader, focused tests and necessary fixtures. Do not move sources merely to tidy folders: loaders and external callers may depend on their paths.
 - **Current release:** only manifest-selected User Objects, exact embedded standalone sources, released icons, relevant verification evidence and delivery notes. Frozen artifacts follow the project's release policy.
-- **Tooling and design:** reusable build/check scripts, editable icon masters, mapping and preview gallery. Keep one authoritative master per component; mark release copies as derived snapshots.
+- **Tooling and design:** reusable build/check scripts, accepted icon artwork, shared style specifications, semantic concepts and file mapping. Keep one authoritative accepted image per component; mark release copies as derived snapshots.
 - **Evidence:** dated results, tested artifact hashes and whether checks were offline, live, manual or user-reported. Do not rewrite an old report to imply verification of a new build.
 - **History:** previous releases, failed packaging attempts, completed one-time transformations, scratch XML and recovery files. Keep a migration index; exclude these from discovery, installation and release ZIPs.
 
@@ -30,7 +30,7 @@ Before reorganization, inspect path references, manifests and callers. Preserve 
 
 ## Release manifest and archive
 
-Use a machine-readable manifest as the release membership authority. Record component/source identity, category/subcategory, package path, standalone source path, relevant hashes and SVG/PNG mapping. Prefer paths relative to the release/project root for portable delivery; preserve established working paths when reorganizing an existing project.
+Use a machine-readable manifest as the release membership authority. Record component/source identity, category/subcategory, package path, standalone source path, relevant hashes and component-to-PNG mapping. Prefer paths relative to the release/project root for portable delivery; preserve established working paths when reorganizing an existing project.
 
 State the hash convention: raw file bytes versus normalized source text (encoding, BOM and newline handling). Preserve an established convention explicitly; a CRLF/LF difference must not be mistaken for an algorithm change or silently accepted without comparison.
 

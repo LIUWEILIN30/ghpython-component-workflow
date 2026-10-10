@@ -1,6 +1,6 @@
 # RhinoMCP and portable workflow delivery
 
-For library membership, file responsibilities and delivery stages, read [workflow-and-artifacts.md](workflow-and-artifacts.md). For requested custom artwork or icon-only replacement, read [icons.md](icons.md). These stages do not require repackaging unrelated components.
+For library membership, file responsibilities and delivery stages, read [workflow-and-artifacts.md](workflow-and-artifacts.md). For requested custom artwork, prepare the semantic brief in [icons.md](icons.md) and use `oil-icon`. For icon-only replacement, use the section below. These stages do not require repackaging unrelated components.
 
 ## Bridge identity and capability
 
@@ -35,3 +35,15 @@ Use official [GH_UserObject](https://developer.rhino3d.com/api/grasshopper/html/
 A set of `.ghuser` files delivers reusable individual components. A whole canvas with connections is delivered as `.gh`; a one-node encapsulated workflow requires a tested cluster or other explicit design. `.ghuser` packaging is not compilation to `.gha` and does not guarantee source-code secrecy. Do not silently change the chosen delivery form.
 
 To install User Objects, users can locate GH's User Objects directory via File → Special Folders → User Objects Folder, copy the intended artifacts there, and refresh/restart GH as needed. Verify on the recipient's supported runtime; copied files alone are not proof of working installation.
+
+## Icon embedding and icon-only updates
+
+Use accepted PNG artwork produced through `oil-icon`; artwork creation is described by that skill. Confirm the installed runtime's required image dimensions and prepare the embedded size from the accepted image. This does not require an SVG master or a pixel-grid design workflow.
+
+For first packaging, set the icon through the installed `GH_UserObject` SDK interface before saving. Confirm supported members against the installed SDK. Embed the image so recipients do not need external artwork files.
+
+For an authorized icon-only update, preserve baseline ghuser files and hashes, then inspect the actual schema using the installed GH_IO API. Update only the verified icon fields. A library icon and an embedded component icon may be separate: the tested NEWPATH layout used outer `Icon` and inner `IconOverride`. Do not assume one field updates both or hard-code an unverified schema. When editing serialized streams, update lengths and serialize back through GH_IO.
+
+Read back the final binary and verify all intended embedded images against the accepted PNG bytes or decoded RGBA pixels, as appropriate to the serialization. Compare the remaining archive content against the baseline after excluding only the intended icon fields; preserve source, ports, identities and unrelated metadata. Resolve unexpected differences before delivery. Update manifest hashes and the requested archive; compare any authorized installed copies with release hashes.
+
+Report offline archive checks separately from live toolbar appearance and fresh-instance execution. Save work and restart Rhino/Grasshopper when needed to clear caches. Avoid assembly-loading APIs as a casual toolbar refresh. Existing canvas instances retain their own state; inspect a newly placed component. Exact preservation of non-icon content does not establish new live execution evidence.
