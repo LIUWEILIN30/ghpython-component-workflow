@@ -1,107 +1,106 @@
-# GHPython Component Workflow
+# GHPython 组件开发工作流
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+完整组件库交付与文件整理见[阶段及文件职责](references/workflow-and-artifacts.md)；定制[组件图标](references/icons.md)采用可编辑母版、原尺寸预览和内嵌PNG回读检查。流程按任务选用开发、验收、独立封装、中文化、图标、发布、安装与归档阶段，分别记录离线检查和GH实时验收证据。
 
-A reusable agent skill for developing and maintaining Rhino 8 Grasshopper Python 3 components. Its two main advantages are **linking external Python source into GH for faster edit-and-test cycles**, and **having AI generate port and input data type configuration to save manual setup in the Python 3 Script component**.
+**简体中文** | [English](README_EN.md)
 
-## Two main advantages
+面向 Rhino 8 Grasshopper Python 3 组件开发与维护的可复用 AI skill。核心优势是：**以链接外部 Python 文件的方式在 GH 中运行组件，提高修改与测试效率；让 AI 生成端口及输入数据类型配置，省去在 Python 3 Script 电池中逐项手动设置的操作。**
 
-### 1. Link external source into GH for faster testing
+## 两项核心优势
 
-Paste a short loader pointing to an external `.py` file into the Python 3 Script component once. AI edits the full implementation in that file; recomputing the GH component reads and executes the latest code. You no longer need to open the component editor and paste the entire implementation after every change.
+### 1. 外部源码链接到 GH，缩短修改与测试循环
 
-**Set up the loader once → AI edits the same source → recompute GH → inspect results and iterate.** The loader stays unchanged while the source path remains the same, making repeated debugging and testing easier. This link loads source through a file path; saving the file alone does not trigger a GH recompute.
+首次使用时，在 Python 3 Script 电池中粘贴一段指向外部 `.py` 文件的加载代码（loader）。完整组件代码保存在该文件中，由 AI 直接修改；后续只需重新计算 GH 组件，就会读取并执行最新代码，无需每次打开电池编辑器、复制粘贴整段实现。
 
-### 2. Let AI configure ports and input data types
+**一次置入 loader → AI 修改同一份源码 → GH 重新计算 → 查看结果并继续迭代。** 源码路径不变时，loader 无需更换，让连续调试与测试更方便。这里的“链接”是通过文件路径加载源码；保存文件本身不会自动触发 GH 重新计算。
 
-Describe the data the component should accept and the results it should produce. AI generates `INPUT_SPECS` and `OUTPUT_SPECS` in the source, and the component script automatically creates or updates the input and output ports and applies their settings:
+### 2. AI 生成端口与数据类型配置，减少手动点击
 
-- **Port names and descriptions:** names, nicknames, and purposes for inputs and outputs.
-- **Types on both sides:** match every input and output to a Type Hint, including object, number, integer, bool, text, point, curve, brep and mesh.
-- **Data access:** Item, List, or Tree access to match the processing logic, plus whether inputs are optional.
+描述组件需要接收什么数据、输出什么结果，AI 就会在源码中生成 `INPUT_SPECS` 和 `OUTPUT_SPECS`，由组件脚本自动创建或更新输入、输出端口，并应用相应设置：
 
-This saves manually adding or removing individual ports, renaming them, and clicking through input type and access settings in the Python 3 Script component. When the interface changes, AI updates the source specifications; after execution, the script schedules the port update and preserves compatible ports and connections. Initial setup usually means placing a component and pasting the loader; with an available bridge, AI can perform that step too.
+- **端口名称与说明**：输入、输出的名称、简称和用途。
+- **两侧数据类型**：为每个输入端和输出端匹配 Type Hint，例如 object、number、integer、bool、text、point、curve、brep、mesh 等。
+- **数据访问方式**：按处理逻辑配置 Item、List 或 Tree，以及输入是否可选。
 
-The skill also covers DataTree handling, readable diagnostics, and portable `.ghuser` User Object delivery.
+无需在 Python 3 Script 电池中逐个增删端口、改名，再逐项点击设置输入类型与访问方式。接口变化时，AI 修改源码中的配置，脚本在运行后安排端口更新，并在兼容的情况下保留原有端口与连线。首次使用通常只需放置电池并粘贴 loader；具备可用桥接工具时，AI 也可以完成这一步。
 
-Inspection of the local Rhino 8.20 assemblies identified **35 built-in semantic hint categories**. The starter includes corresponding aliases plus explicit CLR type support. This is not a fixed total for all GH versions, plugins or Python menus: selection is checked against the actual component and unsupported hints fail explicitly. See [type coverage](references/type-hints.md).
+此外，skill 还覆盖 DataTree 处理、可读诊断信息与可移植 `.ghuser` 用户对象交付。
 
-## First component: divide a curve into points
+本机 Rhino 8.20 程序集检查归纳出 **35 类内置 Hint**，模板已提供对应别名，也支持显式 CLR 类型扩展。这不是所有 GH 版本、插件或 Python 菜单的固定类型总数；最终以当前组件支持的类型为准。类型不可用时会报错，不会悄悄退回 object。详见[类型配置与范围](references/type-hints.md)。
 
-After installation, give AI a workspace Rhino can also read and ask:
+## 第一个电池：曲线等距分点
 
-```text
-Use $ghpython-component-workflow to generate the equal-arc-length curve example
-in my workspace using create_component.py. Configure Curve and Count inputs;
-Points, Parameters and Debug outputs; match types on both sides. Give me the
-source link and complete pasteable loader. Explain the length-10, 5-segment check.
-Deliver source and loader first; no MCP or ghuser packaging is needed.
-```
-
-Paste the loader into a fresh Python 3 Script component and allow automatic setup and its following solve to finish. Connect a line from (0,0,0) to (10,0,0), Count=5: expect six points at x=0,2,4,6,8,10. Closed curves omit the duplicate seam point. See [quickstart](references/quickstart.md) for exact setup, troubleshooting and save/reopen acceptance.
-
-This example avoids the planarity, closed-region and Boolean tolerance prerequisites of region difference. Generated source headers contain component usage.
-
-## Keep token use focused
-
-- Route by task: an algorithm edit reads the header, specs and target function, not every reference.
-- Generate shared helpers directly; AI need not rewrite, echo or reread boilerplate each time.
-- Reuse known environment, path mapping and hint catalogs; enumerate only for a new runtime or unsupported type.
-- Same-path updates only need a recompute reminder, not repeated loaders, full source or packaging instructions. Run relevant tests.
-
-These reduce repeated work; no fixed token-saving percentage has been measured.
-
-## Requirements
-
-- An agent environment that supports local Agent Skills, such as Codex.
-- Rhino 8 with Grasshopper Python 3 for live component execution and verification.
-- A working Python 3.8+ interpreter for generation/offline checks; those helpers use only the standard library.
-- AI and Rhino must read the same current source. Remote/container setups need shared access or synchronization; `--rhino-source` supplies the Rhino-side absolute path but does not transfer files.
-- A configured Rhino/GH bridge, such as RhinoMCP, when the agent needs to inspect or operate a live canvas. The skill does not install or connect a bridge automatically.
-
-Legacy GHPython/IronPython components require runtime-specific assessment before changes. Without Rhino/GH access, the agent can still prepare code and test instructions, but cannot confirm live geometry or packaging results.
-
-## Install in Codex
-
-Download this repository and keep its files together in a folder named `ghpython-component-workflow`. Place that folder in either:
-
-- `~/.agents/skills/` for personal use across projects.
-- `<project>/.agents/skills/` for a project-specific skill.
-
-The installed entry must be `ghpython-component-workflow/SKILL.md`. Do not rename it to `README.md` or copy it without its supporting folders. If the skill does not appear, restart Codex.
-
-Alternatively, ask Codex's `$skill-installer` to install the skill from [this repository](https://github.com/LiuWeilin-30/ghpython-component-workflow). See the [official skill documentation](https://learn.chatgpt.com/docs/build-skills) for discovery locations and installation guidance.
-
-## Use
-
-Example prompt:
+安装后，把下面的需求发给 AI，并指定一个 Rhino 也能访问的工作目录：
 
 ```text
-Use $ghpython-component-workflow to develop a Rhino 8 Grasshopper Python 3
-component. Keep its implementation in a workspace .py file, provide a
-ready-to-paste loader, and automatically configure input/output ports,
-type hints on both sides, Item/List/Tree access, and optional inputs for the task.
-Preserve compatible ports and connections.
+使用 $ghpython-component-workflow，在我的工作目录生成曲线按弧长等分为点的示例。
+使用附带的 create_component.py；输入 Curve、Count，输出 Points、Parameters、Debug，
+自动匹配两侧类型。给我源码链接和完整可粘贴 loader，并用长度 10、分 5 段说明验收结果。
+本次先交付源码和 loader，无需 MCP 或 ghuser 封装。
 ```
 
-For existing components, provide the implementation or loader path and describe the expected behavior. Existing project instructions, interfaces, and release policies remain authoritative.
+首次只需在一个新的 Python 3 Script 电池中粘贴 loader，等待自动端口配置和后续计算。连接 `(0,0,0)` 到 `(10,0,0)` 的线段，Count=5，应得到 x=0、2、4、6、8、10 共六个点。闭合曲线不会重复输出首尾接缝点。完整步骤、故障处理及保存重开检查见[快速开始](references/quickstart.md)。
 
-The agent edits the external implementation; recomputing the Grasshopper component reloads it. After verification, portable delivery embeds standalone source into `.ghuser` objects. A workflow of multiple objects also needs a connecting `.gh` example. A User Object is not a compiled `.gha` plugin.
+选择这个例子是因为它比区域差集少了共面、闭合区域与布尔公差等前提，更便于判断开发环境是否正常。所有业务用法保存在生成的 `.py` 头部。
 
-## Files
+## 减少重复 token 消耗
 
-| Path | Purpose |
+- 入口按任务导航：算法微调只读源码头部、端口声明和目标函数，不加载全部参考资料。
+- 生成工具直接嵌入公共端口代码，AI 无需每次重写、粘贴或完整阅读辅助函数。
+- 环境、路径映射和类型目录确认后复用；类型枚举只在新环境或遇到不支持类型时执行。
+- 同一路径的后续修改只提醒重新计算，不重复发送 loader、完整源码或封装流程；只运行相关测试。
+
+这些是减少重复工作的措施，不代表已测得固定 token 节省比例。
+
+## 环境要求
+
+- 支持本地 Agent Skills 的 AI 环境，例如 Codex。
+- Rhino 8 及 Grasshopper Python 3，用于实际运行与验证组件。
+- 可用的 Python 3.8+ 解释器，用于附带的生成与离线检查工具；这些工具仅依赖标准库。
+- AI 和 Rhino 能读取同一份最新源码。远程／容器场景需共享目录或同步，可用 `--rhino-source` 指定 Rhino 侧绝对路径；该参数不会自动传输文件。
+- 当 AI 需要检查或操作正在运行的画布时，需配置 Rhino/GH 桥接工具，例如 RhinoMCP。本 skill 不会自动安装或连接桥接工具。
+
+修改旧版 GHPython/IronPython 组件前，需要先评估其运行环境。没有 Rhino/GH 访问能力时，AI 仍可准备代码和测试步骤，但不能确认实际几何结果或封装结果。
+
+## 在 Codex 中安装
+
+下载本仓库，将文件完整保存在名为 `ghpython-component-workflow` 的文件夹中，再将该文件夹放入以下任一位置：
+
+- `~/.agents/skills/`：供个人跨项目使用。
+- `<项目目录>/.agents/skills/`：仅供对应项目使用。
+
+安装后的入口应为 `ghpython-component-workflow/SKILL.md`。请保留这个文件名及其配套目录，不要将它改名为 `README.md`，也不要只复制入口文件。如果安装后没有显示该 skill，可重启 Codex。
+
+也可以请 Codex 的 `$skill-installer` 从[本仓库](https://github.com/LiuWeilin-30/ghpython-component-workflow)安装。识别目录与安装方式见[官方 skill 文档](https://learn.chatgpt.com/docs/build-skills)。
+
+## 使用
+
+示例提示词：
+
+```text
+使用 $ghpython-component-workflow 帮我开发一个 Rhino 8 Grasshopper Python 3 组件。
+将实现保存在工作目录的 .py 文件中，提供可以直接粘贴的 loader，
+根据功能需求自动生成输入、输出端口及两侧数据类型、Item/List/Tree 和输入可选设置，保留兼容的端口和现有连线。
+```
+
+修改既有组件时，请提供源码或 loader 路径，并说明预期行为。已有项目规范、接口约定和发布政策继续适用。
+
+AI 修改外部实现文件后，需要重新计算 Grasshopper 组件来加载新代码；保存源码本身不会触发重新计算。完成验证后，可将独立源码嵌入 `.ghuser` 用户对象，以便移植。多个用户对象组成的工作流还需要提供连接示例 `.gh` 文件。用户对象不等同于编译后的 `.gha` 插件。
+
+## 文件说明
+
+| 路径 | 用途 |
 | --- | --- |
-| [SKILL.md](SKILL.md) | Agent entry point, metadata, workflow, and reference routing |
-| [agents/openai.yaml](agents/openai.yaml) | Display information and invocation policy |
-| `references/` | Detailed development, maintenance, diagnostics, and packaging guidance |
-| `assets/` | Shared starter, curve-division body, loader and project-control templates |
-| `scripts/` | Component/loader generators, on-demand hint catalog and focused checks |
+| [SKILL.md](SKILL.md) | AI 加载的入口、元数据、开发流程与参考文档导航 |
+| [agents/openai.yaml](agents/openai.yaml) | 显示信息与调用策略 |
+| `references/` | 开发、维护、诊断与封装的详细说明 |
+| `assets/` | 公共组件模板、曲线分点业务模板、loader 与项目控制模板 |
+| `scripts/` | 组件／loader 生成工具、按需类型枚举及离线检查脚本 |
 
-`README.md` explains installation and use; `SKILL.md` contains the instructions the agent loads. Upload both files at the repository root, alongside the supporting folders.
+`README.md` 和 `README_EN.md` 分别提供中文与英文安装、使用说明；`SKILL.md` 保留英文，供 AI 加载。上传 GitHub 时，将这三个文件及配套目录一起放在仓库根目录。
 
-The helper checks cover loader behavior and simulated port handling. They do not replace live Rhino/GH verification. No author-specific project guide or machine path is required.
+辅助检查覆盖 loader 行为与模拟端口处理，不能代替实际 Rhino/GH 验证。使用本 skill 不需要原作者的个人项目规范或机器路径。
 
-## License
+## 许可证
 
-MIT License, Copyright (c) 2026 LiuWeilin-30. The license travels with the skill folder; see [LICENSE](LICENSE).
+采用 MIT 许可证，Copyright (c) 2026 LiuWeilin-30。许可证随完整目录分发，详见 [LICENSE](LICENSE)。

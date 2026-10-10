@@ -1,6 +1,6 @@
 ---
 name: ghpython-component-workflow
-description: Develop Rhino 8 Grasshopper Python 3 components with external-source loaders, automatically typed input/output ports, preserved connections and data trees, and optional portable ghuser delivery.
+description: Develop and maintain Rhino 8 Grasshopper Python 3 components with external-source loaders and typed ports; prepare standalone ghuser libraries, localized interfaces, component icons and organized delivery artifacts when requested.
 ---
 
 # Grasshopper Python Component Workflow
@@ -18,6 +18,8 @@ Keep implementation in a stable workspace `.py`; paste its small loader into GH 
 | Runtime/API, geometry or substantial edits | Relevant section of [development.md](references/development.md) |
 | Shared helper changes, backups or release maintenance | Relevant section of [maintenance.md](references/maintenance.md) |
 | Validation or requested packaging | [validation.md](references/validation.md); [packaging-mcp.md](references/packaging-mcp.md) only for packaging |
+| Whole workflow, library delivery or file reorganization | [workflow-and-artifacts.md](references/workflow-and-artifacts.md) |
+| Custom icons or icon-only ghuser updates | [icons.md](references/icons.md) |
 
 Do not load all references, tests, READMEs or templates each turn. Use the generator to copy tested infrastructure instead of reproducing it in chat. Inspect that infrastructure when changing it or diagnosing it. Reuse recorded runtime, source path and hint catalog; do not re-enumerate types or browse unchanged APIs for every component. Prefer bounded Debug summaries and focused tests. Read additional material when a failure or uncertainty requires it; token savings must not hide unverified behavior.
 
@@ -30,6 +32,15 @@ Do not load all references, tests, READMEs or templates each turn. Use the gener
 5. Schedule port changes outside the current solve, discard superseded callbacks and preserve compatible parameter identities, wires and persistent values. Revisions/messages alone do not rebuild ports. Wait for configuration and the following solve before evaluating output. Required/invalid old inputs can prevent the loader from executing; resolve that blocking input or use a fresh component.
 6. Verify unfamiliar API signatures against installed XML or official Rhino documentation. Preserve meaningful tree paths and empty branches, distinguish geometry from display samples, and declare units/tolerance where relevant. Keep complete component usage in its source header, not a separate per-component manual.
 7. Run checks relevant to the change. Use current Debug/source identity for fragile or repeatedly failing components. Distinguish offline tests, real Rhino geometry, live GH ports and save/reopen checks. If live access is unavailable, deliver the useful source and concrete manual acceptance steps; do not imply live verification.
+8. For authorized delivery, follow the [stage and artifact map](references/workflow-and-artifacts.md): accepted behavior → standalone source → requested language/icon preparation → fresh serialization and readback → manifest-based archive → authorized installation → batch archive. Preserve a baseline for bounded updates and report each stage's actual evidence. Keep current releases, reusable tooling/design masters and historical experiments separate without breaking development loaders.
+
+## Chinese-version language contract
+
+When delivering a Chinese version, use Chinese for the component's displayed name, a concise one-sentence functional description, input/output descriptions, and a detailed source header explaining purpose and every input/output (types, access, units/defaults and constraints where relevant). Describe each port's function or key input in one short sentence; replace generic conversion text and packaging/debug boilerplate. Use Chinese for component-controlled user-facing errors and warnings, including handled exception context.
+
+Keep the remaining interface and implementation in English: port names/nicknames, code identifiers and ordinary code comments, categories/subcategories, protocol keys, API/type names and technical tokens. A Chinese version is not a translation of every string. Preserve established identifiers and data contracts. The skill and reusable templates remain English; apply this contract to the delivered Chinese component.
+
+Distinguish authored diagnostics from GH/Python host messages such as missing required input, conversion/type-hint failures and uncaught exception reports. Translate messages the component owns, preserving severity and useful technical details; document host-controlled text that cannot be localized at component level. Never make required inputs Optional, weaken type hints, swallow exceptions, or change failure/output semantics merely to suppress an English message. For packaged verification, follow the [language checks](references/packaging-mcp.md#verify-chinese-version-text).
 
 ## Delivery
 

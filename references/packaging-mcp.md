@@ -1,5 +1,7 @@
 # RhinoMCP and portable workflow delivery
 
+For library membership, file responsibilities and delivery stages, read [workflow-and-artifacts.md](workflow-and-artifacts.md). For requested custom artwork or icon-only replacement, read [icons.md](icons.md). These stages do not require repackaging unrelated components.
+
 ## Bridge identity and capability
 
 The relevant bridge name is **RhinoMCP**, with a reference implementation at [jingcheng-chen/rhinomcp](https://github.com/jingcheng-chen/rhinomcp). An AI client may register it as `rhino`; server name and executable spelling alone do not prove the installed fork/version. Inspect the available tools/capabilities and bridge version instead of assuming another MCP project's tool names.
@@ -13,6 +15,12 @@ Packaging does **not** require an imagined `package_ghuser` MCP tool. With an in
 Validate representative components and their full producer→editor→consumer workflow, including actual inputs, paths, geometry and failure behavior. Once tests are complete, ask the user whether to package and confirm the workflow name and output directory, unless the session already specifies them. Suggest grouping by the workflow rather than placing every unrelated component in one global release directory. Do not ask again for already confirmed release choices.
 
 Prepare final standalone source under `tests/<workflow>/packaging/`. Embed all required configuration/helpers and business code, remove the development loader and pure test exports/Debug, and leave the accepted algorithm unchanged. Document intentional dependencies; default shareable User Objects must not depend on the author's workspace, skill assets or absolute paths.
+
+## Verify Chinese-version text
+
+Apply the language contract in `SKILL.md` to both the User Object's library metadata and its embedded component. Check component names and one-sentence descriptions, every input/output description, the embedded source header and authored error/warning messages. Update authoritative port specs as well as serialized descriptions so a subsequent solve does not restore generic English text. Keep names/nicknames of ports, type hints, access, Optional flags, identities, icons and algorithm behavior unchanged during a text-only update.
+
+Read back the final `.ghuser` and instantiate a fresh object; inspect library/component metadata and all port descriptions after configuration and another solve. Check the source header against actual ports and exercise one representative authored failure. Report remaining GH/Python host-generated English messages explicitly; unchanged host text is not evidence that component-authored diagnostics were translated. If only offline readback was possible, distinguish that evidence from live tooltip/runtime validation.
 
 ## Serialize the correct object
 
