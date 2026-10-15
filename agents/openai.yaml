@@ -1,6 +1,6 @@
 interface:
   display_name: "GHPython Component Workflow"
-  short_description: "Build GH Python with loaders and automatically typed ports"
-  default_prompt: "Use $ghpython-component-workflow to develop a Rhino 8 Python 3 component with an external-source loader and automatically matched input/output types; reuse the starter and read only the references needed for this task."
+  short_description: "Develop GH Python, deliver GHA, and build Rhino parameter panels"
+  default_prompt: "Use $ghpython-component-workflow for fast Rhino 8 GH Python iteration with loaders and typed ports, direct GHA library delivery, or a companion Rhino parameter panel for the requested runtime modes. Read only the relevant reference, preserve accepted algorithms, and report actual validation."
 policy:
   allow_implicit_invocation: true

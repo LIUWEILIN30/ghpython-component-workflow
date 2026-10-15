@@ -22,7 +22,7 @@ Describe the data the component should accept and the results it should produce.
 
 This saves manually adding or removing individual ports, renaming them, and clicking through input type and access settings in the Python 3 Script component. When the interface changes, AI updates the source specifications; after execution, the script schedules the port update and preserves compatible ports and connections. Initial setup usually means placing a component and pasting the loader; with an available bridge, AI can perform that step too.
 
-The skill also covers DataTree handling, readable diagnostics, and portable `.ghuser` User Object delivery.
+The skill also covers DataTree handling, diagnostics, direct `.gha` library delivery, requested `.ghuser` packaging, and companion Rhino parameter panels for both Windows Rhino 8 .NET runtime modes. GH canvas snapping, dragging, mouse hooks and editor-menu extensions are outside its scope.
 
 For full library delivery and cleanup, use the [stage and artifact map](references/workflow-and-artifacts.md). For requested [component icons](references/icons.md), prepare source-backed function and spatial-geometry concepts, then use the `oil-icon` skill for artwork and transparent PNG delivery. The earlier SVG / 24px pixel-icon design method is retired. Embedding checks belong to packaging; offline readback and live GH acceptance remain distinct.
 
@@ -43,6 +43,13 @@ Deliver source and loader first; no MCP or ghuser packaging is needed.
 Paste the loader into a fresh Python 3 Script component and allow automatic setup and its following solve to finish. Connect a line from (0,0,0) to (10,0,0), Count=5: expect six points at x=0,2,4,6,8,10. Closed curves omit the duplicate seam point. See [quickstart](references/quickstart.md) for exact setup, troubleshooting and save/reopen acceptance.
 
 This example avoids the planarity, closed-region and Boolean tolerance prerequisites of region difference. Generated source headers contain component usage.
+
+## From fast development to plugin delivery
+
+- **Direct GHA:** retain external Python/loader iteration, then register C# component classes and embed standalone Python sources, shared helpers and icons. No ghuser intermediate or full C# algorithm rewrite is required; execution still uses Rhino Python 3. See [direct GHA delivery](references/compiled-gha.md).
+- **Two-runtime parameter panel:** build shared C# source, stable identities and icons for `net48` and `net8.0-windows`; distribute the `.rhp` through Yak runtime directories and verify selection/visibility in independent Rhino processes. See [Rhino parameter panels](references/rhino-panels.md).
+
+These routes derive from accepted component-library and panel deliveries. The panel compatibility result does not establish Framework support for the Python GHA; each reference states its tested baseline and limits.
 
 ## Keep token use focused
 
@@ -88,7 +95,7 @@ Preserve compatible ports and connections.
 
 For existing components, provide the implementation or loader path and describe the expected behavior. Existing project instructions, interfaces, and release policies remain authoritative.
 
-The agent edits the external implementation; recomputing the Grasshopper component reloads it. After verification, portable delivery embeds standalone source into `.ghuser` objects. A workflow of multiple objects also needs a connecting `.gh` example. A User Object is not a compiled `.gha` plugin.
+The agent edits the external implementation; recomputing the Grasshopper component reloads it. After verification, build a `.gha` library directly with embedded standalone Python, or package `.ghuser` when User Objects are explicitly requested. Deliver connected examples and layouts as `.gh`. A User Object is not a compiled `.gha` plugin.
 
 ## Files
 

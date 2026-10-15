@@ -25,6 +25,8 @@ For port changes, exercise an already connected instance as well as a fresh comp
 
 Use the user's requested artifact: source script, loader, GH definition, User Object or compiled plugin. Preserve established release rules and the accepted release baseline as described in [maintenance.md](maintenance.md); a project can choose frozen releases or deliberate replaceable releases.
 
+For direct GHA delivery, verify final component-server registration, ports/defaults, embedded resources, real chains, save/reopen and blocked development-directory reads as described in [compiled-gha.md](compiled-gha.md). For dual-runtime panels, verify the installed package in independent Framework/Core Rhino processes and record the selected binary path and actual visibility; see [rhino-panels.md](rhino-panels.md). Success on one artifact/runtime does not establish compatibility for another.
+
 For a User Object meant to be portable, instantiate it in a fresh definition and confirm that it does not rely on the author's absolute file paths. If dependencies are intentional, identify and test their installation/loading instead of calling the object standalone. Verify ports, representative geometry, repeated solves and save/reopen for the final artifact when GH is available.
 
 If live GH access is unavailable, provide exact manual reproduction steps, input values and expected observations. Report completed and pending verification separately. Do not claim a package was tested merely because its source passed syntax checks.

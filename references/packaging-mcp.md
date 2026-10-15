@@ -1,4 +1,6 @@
-# RhinoMCP and portable workflow delivery
+# RhinoMCP and portable User Object delivery
+
+This reference applies to explicitly requested `.ghuser` packaging. For an installable component library, use [direct GHA delivery](compiled-gha.md) without a User Object intermediate. For companion Rhino parameter panels, use [rhino-panels.md](rhino-panels.md).
 
 For library membership, file responsibilities and delivery stages, read [workflow-and-artifacts.md](workflow-and-artifacts.md). For requested custom artwork, prepare the semantic brief in [icons.md](icons.md) and use `oil-icon`. For icon-only replacement, use the section below. These stages do not require repackaging unrelated components.
 

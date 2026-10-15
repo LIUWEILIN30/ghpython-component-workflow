@@ -1,11 +1,13 @@
 ---
 name: ghpython-component-workflow
-description: Develop and maintain Rhino 8 Grasshopper Python 3 components with external-source loaders and typed ports; prepare standalone ghuser libraries, localized interfaces, component icons and organized delivery artifacts when requested.
+description: Develop Rhino 8 Grasshopper Python 3 components with external-source loaders and typed ports; deliver component libraries directly as GHA or requested ghuser, and build companion Rhino parameter panels for .NET Framework/Core. Excludes GH canvas interaction extensions.
 ---
 
 # Grasshopper Python Component Workflow
 
 Keep implementation in a stable workspace `.py`; paste its small loader into GH once. AI edits the file, and a GH recompute reads it again. Automatically configure **every input and output**: name, description, Item/List/Tree access and an appropriate type hint; inputs also declare Optional. This skill is self-contained; the author's paths, project rules and MCP setup are not prerequisites.
+
+Companion Rhino parameter panels and direct GHA library delivery are conditional routes below. GH canvas interaction plugins (snapping, dragging, mouse hooks and editor menus) are outside this skill. For panel-only work, use the panel reference directly; Python loader generation and component port setup are not prerequisites.
 
 ## Read only what the task needs
 
@@ -17,7 +19,10 @@ Keep implementation in a stable workspace `.py`; paste its small loader into GH 
 | Trees or diagnostic failures | [data-and-debug.md](references/data-and-debug.md), [troubleshooting.md](references/troubleshooting.md) as needed |
 | Runtime/API, geometry or substantial edits | Relevant section of [development.md](references/development.md) |
 | Shared helper changes, backups or release maintenance | Relevant section of [maintenance.md](references/maintenance.md) |
-| Validation or requested packaging | [validation.md](references/validation.md); [packaging-mcp.md](references/packaging-mcp.md) only for packaging |
+| Validation or delivery choice | [validation.md](references/validation.md); choose the requested artifact below |
+| Direct compiled component library (.gha) | [compiled-gha.md](references/compiled-gha.md); no intermediate ghuser required |
+| Requested User Objects (.ghuser) | [packaging-mcp.md](references/packaging-mcp.md) |
+| Companion Rhino parameter panel; Framework/Core compatibility | [rhino-panels.md](references/rhino-panels.md) |
 | Whole workflow, library delivery or file reorganization | [workflow-and-artifacts.md](references/workflow-and-artifacts.md) |
 | Custom component icons | Source-backed function/geometry brief in [icons.md](references/icons.md), then use `oil-icon` for artwork |
 | Icon-only ghuser updates | [packaging-mcp.md](references/packaging-mcp.md#icon-embedding-and-icon-only-updates) |
@@ -33,7 +38,7 @@ Do not load all references, tests, READMEs or templates each turn. Use the gener
 5. Schedule port changes outside the current solve, discard superseded callbacks and preserve compatible parameter identities, wires and persistent values. Revisions/messages alone do not rebuild ports. Wait for configuration and the following solve before evaluating output. Required/invalid old inputs can prevent the loader from executing; resolve that blocking input or use a fresh component.
 6. Verify unfamiliar API signatures against installed XML or official Rhino documentation. Preserve meaningful tree paths and empty branches, distinguish geometry from display samples, and declare units/tolerance where relevant. Keep complete component usage in its source header, not a separate per-component manual.
 7. Run checks relevant to the change. Use current Debug/source identity for fragile or repeatedly failing components. Distinguish offline tests, real Rhino geometry, live GH ports and save/reopen checks. If live access is unavailable, deliver the useful source and concrete manual acceptance steps; do not imply live verification.
-8. For authorized delivery, follow the [stage and artifact map](references/workflow-and-artifacts.md): accepted behavior → standalone source → requested language/icon preparation → fresh serialization and readback → manifest-based archive → authorized installation → batch archive. Preserve a baseline for bounded updates and report each stage's actual evidence. Keep current releases, reusable tooling/design masters and historical experiments separate without breaking development loaders.
+8. For authorized delivery, follow the [stage and artifact map](references/workflow-and-artifacts.md): accepted behavior → standalone source → requested language/icon preparation → format-specific build/serialization and final-artifact readback → manifest-based archive → authorized installation → batch archive. Preserve a baseline for bounded updates and report each stage's actual evidence. Keep current releases, reusable tooling/design masters and historical experiments separate without breaking development loaders.
 
 ## Chinese-version language contract
 
@@ -45,6 +50,6 @@ Distinguish authored diagnostics from GH/Python host messages such as missing re
 
 ## Delivery
 
-Link the source and provide the **complete ready-to-paste loader in a fenced Python block**, with the actual Rhino-readable path substituted. A downloadable loader alone is insufficient. For later same-path edits, only remind the user to recompute; repeat the loader when requested or when its path changes. Report the result, relevant checks and remaining limits concisely; do not echo the entire source or standard workflow.
+For source/loader delivery, link the source and provide the **complete ready-to-paste loader in a fenced Python block**, with the actual Rhino-readable path substituted. A downloadable loader alone is insufficient. For later same-path edits, only remind the user to recompute; repeat the loader when requested or when its path changes. Report the result, relevant checks and remaining limits concisely; do not echo the entire source or standard workflow.
 
-Package only when requested or already authorized. If useful after successful testing, ask once whether `.ghuser` delivery is wanted and where. Embed standalone source in a fresh packaging component; do not change connected development instances or assume `.ghuser` is a compiled `.gha`. Packaging details stay in the conditional reference.
+Package only when requested or already authorized, and honor the selected format. For an installable component library with no specified format, prefer direct `.gha` delivery from accepted standalone Python sources when the target host APIs are verified; do not require `.ghuser` first or rewrite working algorithms in C#. Use `.ghuser` for an explicit User Object request. Companion Rhino parameter panels use `.rhp` and, when both Windows runtime modes are requested, a shared-source dual-target package. Follow the relevant reference, preserve connected development instances, and state actual host dependencies and runtime acceptance. Deliver the plugin/package and concise evidence; a pasteable loader is required only when delivering a development loader.
