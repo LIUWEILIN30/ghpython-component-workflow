@@ -28,6 +28,33 @@ The compiled C# classes supply registration, stable component GUIDs, metadata, f
 6. **Keep descriptions and preview working.** Selecting Type Hints or configuring script parameters can overwrite Description. The tested adapter restored authoritative descriptions after setup, after archive readback and around solves; verify tooltips on fresh, solved and reopened instances. Adapt custom preview to the Python SDK script lifecycle when needed; check drawing and clipping bounds, not just output data. Restrict adaptations to identified packaging functions and compare business-function ASTs without masking arbitrary strings.
 7. **Compile with explicit resources and references.** Use a matching .NET SDK project, or installed Roslyn through an authorized in-Rhino execution tool. The tested Roslyn route emitted a dynamically linked library with Python sources, component icons and the category icon as manifest resources. Resolve reference locations against the target installation, collect compiler diagnostics and verify resource membership. No author-specific compiler path or external build service is required. Avoid overwriting an assembly already loaded in Rhino; use a fresh build path and a clean process for final verification.
 
+## When a GHA places companion input objects
+
+This route applies when the requested component brings sliders, value lists or panels onto the canvas. It does not add general canvas snapping or drag hooks to the skill.
+
+Serialize accepted input objects to preserve their values, ranges, precision, options and dimensions. Store their destination port indices and relative placement. Relative `Pivot` values alone do not guarantee horizontal wires: restored attributes and subsequent layout can round or change the actual connector coordinates.
+
+For a layout intended to have horizontal wires and one shared output column:
+
+1. Restore and add the companion objects, connect them to their intended inputs, and finish component/source layout with `ExpireLayout()` and `PerformLayout()` before measuring grips.
+2. Read the source's `OutputGrip` and destination's `InputGrip`. Correct the source object's pivot by the measured error, rather than assuming that its pivot or bounding-box centre is its connection point:
+
+   ```csharp
+   float dy = target.Attributes.InputGrip.Y - source.Attributes.OutputGrip.Y;
+   float dx = columnX - source.Attributes.OutputGrip.X;
+   var p = source.Attributes.Pivot;
+   source.Attributes.Pivot = new PointF(p.X + dx, p.Y + dy);
+   source.Attributes.ExpireLayout();
+   source.Attributes.PerformLayout();
+   ```
+
+   Derive `columnX` from the accepted design; a median of the restored output-grip X coordinates is useful when those outputs already form an approximately common column. Do not impose a shared column on a layout that intentionally uses different columns.
+3. Re-measure after layout. Use a bounded correction loop (the tested implementation used up to three passes and a 0.01 canvas-unit tolerance), and check the residual instead of assuming that assigning a fractional pivot succeeded.
+4. Align the newly created set after wiring, then schedule one further alignment after its first wired solution/layout has settled. Check that the component and sources still belong to the intended document and remain connected before applying a delayed correction. Keep the operation bounded; it must not keep moving inputs after the user drags them.
+5. Keep generation separate from correction: archive readback and copying must not create duplicate input sets. Preserve input settings, wires and existing undo behavior; state whether an update affects only newly placed instances or also migrates old canvas objects.
+
+Test the **final disk GHA's actual component and input attribute classes**, not only a calculation of copied offsets. Measure all connected grips, including the first slider and final panel; test fractional and negative placement coordinates, deliberately displace the first slider in both axes, and repeat correction to verify that settled positions do not move. Check horizontal grip differences and the output column separately. A standalone process can verify real GH attribute layout without MCP, but does not prove document scheduling, Rhino geometry solves, save/reopen, DPI behavior or live canvas rendering. Report those limits. A screenshot remaining wrong after an offline pass is a reason to inspect the installed/loaded binary and layout timing, not to dismiss the visible error.
+
 ## Accept the final plugin
 
 First prove the wrapper on one small representative component, including a custom packet or preview where relevant. Then generate the library from the manifest and validate the **final disk GHA**, not just an earlier in-memory assembly:
@@ -39,6 +66,8 @@ First prove the wrapper on one small representative component, including a custo
 - Package only manifest-selected files, check archive membership/CRC/hashes, and report build, live solve, save/reopen, isolation and installation evidence separately. Keep uploading, machine execution and other side effects outside acceptance unless requested.
 
 For direct manual installation, use GH's File → Special Folders → Components Folder. Identify and back up obsolete same-library ghuser entries and toolbar-only assemblies when an authorized migration would otherwise create duplicate entries. Do not remove unrelated libraries. A new GHA does not automatically convert old Python/ghuser canvas instances: supply a migration plan or a connected example and test new instances. Existing loaded assemblies normally require a Rhino restart; installation and replacing the user's library remain separate from preparing the release.
+
+For same-version replacements, compare SHA256 between the release binary and the actual installation path; a matching version string is insufficient. After an authorized installation, retain the original, verify the installed hash, and distinguish the on-disk file from the assembly already loaded by a running Rhino. When available, inspect the process's loaded module path/version and whether it started after installation; this is supporting evidence, not a hash of its in-memory assembly. Do not claim an installation or restart merely because the release ZIP was rebuilt. If the symptom persists, check installation/loaded-path mismatch before revising a layout correction that passed its measured checks.
 
 ## Evidence and portability limit
 

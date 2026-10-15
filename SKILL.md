@@ -20,7 +20,7 @@ Companion Rhino parameter panels and direct GHA library delivery are conditional
 | Runtime/API, geometry or substantial edits | Relevant section of [development.md](references/development.md) |
 | Shared helper changes, backups or release maintenance | Relevant section of [maintenance.md](references/maintenance.md) |
 | Validation or delivery choice | [validation.md](references/validation.md); choose the requested artifact below |
-| Direct compiled component library (.gha) | [compiled-gha.md](references/compiled-gha.md); no intermediate ghuser required |
+| Direct compiled component library (.gha), including companion input placement/alignment | [compiled-gha.md](references/compiled-gha.md); no intermediate ghuser required |
 | Requested User Objects (.ghuser) | [packaging-mcp.md](references/packaging-mcp.md) |
 | Companion Rhino parameter panel; Framework/Core compatibility | [rhino-panels.md](references/rhino-panels.md) |
 | Whole workflow, library delivery or file reorganization | [workflow-and-artifacts.md](references/workflow-and-artifacts.md) |
